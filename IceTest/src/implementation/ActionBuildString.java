@@ -2,7 +2,7 @@ package implementation;
 
 import framework.Action;
 
-public class ActionToString implements Action {
+public class ActionBuildString implements Action {
 
 	@Override
 	public Object performAction(Object newObj, Object work) {

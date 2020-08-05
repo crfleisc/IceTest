@@ -6,22 +6,24 @@ import java.util.Collection;
 import framework.ObjectNotInTreeException;
 import framework.Sorter;
 
-public class SorterDepthFirst extends Sorter {
+public class SorterDescendantsDepthFirst extends Sorter {
 	ArrayList<ConcreteTreeNode> sorted = new ArrayList<ConcreteTreeNode>();
+	ConcreteTreeNode startNode;
 	
 	@Override
 	public Collection<?> sort(Object startNode) {
-		search((ConcreteTreeNode) startNode);
+		this.startNode = (ConcreteTreeNode) startNode;
+		sort((ConcreteTreeNode) startNode);
 		return sorted;
 	}
 	
-	private void search(ConcreteTreeNode node) {
-		if(!sorted.contains(node))
+	private void sort(ConcreteTreeNode node) {
+		if(!sorted.contains(node) && !node.equals(startNode))
 			sorted.add(node);
 		
 		try {
 			for(Object aNode : node.getChildren(node)) {
-				search((ConcreteTreeNode) aNode);
+				sort((ConcreteTreeNode) aNode);
 			}
 		} catch (ObjectNotInTreeException e) {
 			e.printStackTrace();

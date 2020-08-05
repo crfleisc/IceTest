@@ -11,8 +11,11 @@ public class TraverseFirstToLast extends Traverser {
 
 	@Override
 	public Object next() {
-		currentObjectNum++;
-		return orderedObjects.get(currentObjectNum);
+		if(this.hasNext()) {
+			currentObjectNum++;
+			return orderedObjects.get(currentObjectNum);			
+		}
+		return null;
 	}
 
 }

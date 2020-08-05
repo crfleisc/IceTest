@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import framework.ObjectNotInTreeException;
+import framework.Sorter;
 import framework.Tree;
 
 /*
- * A simple implementation of Tree to test my framework
+ * An implementation of Tree to test my framework
  */
 public class ConcreteTreeNode implements Tree {
+	private ConcreteTreeNode root;
 	private Object data;
-	private List<Object> children;
-	private ConcreteTreeNode parent;
+	private List<ConcreteTreeNode> children = new ArrayList<ConcreteTreeNode>();
+	private ConcreteTreeNode parent = null;
 	
 	public ConcreteTreeNode(Object data) {
 		this.data = data;
-		children = new ArrayList<Object>();
+	}	
+	
+	public ConcreteTreeNode(Object data, ConcreteTreeNode root) {
+		this.root = root;
+		this.data = data;
 	}
 	
 	public Object getData() {
@@ -32,30 +38,44 @@ public class ConcreteTreeNode implements Tree {
 		this.parent = parent;
 	}
 	
-	@Override
-	public String toString() {
-		return data.toString();
-		
+	public boolean hasParent() {	//TODO try and remove
+		return !(this.parent == null);
 	}
 	
 	@Override
-	public List<Object> getChildren(Object node) throws ObjectNotInTreeException {
-		if(children == null)
-			throw new ObjectNotInTreeException("No children found, node is a leaf.");
+	public String toString() {
+		return data.toString();
+	}
+	
+	@Override
+	public List<ConcreteTreeNode> getChildren(Object node) throws ObjectNotInTreeException {
+		if(!isInTree(node))
+			throw new ObjectNotInTreeException(node + " not found in tree");
 		return children;
 	}
 
 	@Override
 	public Object getParent(Object node) throws ObjectNotInTreeException {
-		if(parent == null)
-			throw new ObjectNotInTreeException("No parent found, node is root of the tree.");
+		if(!isInTree(node))
+			throw new ObjectNotInTreeException("Node: " + node + " not found in tree");
 		return parent;
 	}
 
 	@Override
 	public boolean isInTree(Object node) {
-		// TODO Auto-generated method stub
-		return false;
+		if(node.equals(root))
+			return true;
+		
+		Sorter sorter = new SorterDescendantsDepthFirst();
+//		System.out.println(sorter.sort(root).contains(node));		
+		
+		
+		
+		
+		
+		return true;
 	}
+
+	
 
 }
