@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import framework.ObjectNotInTreeException;
-import framework.Sorter;
 import framework.Tree;
 
 /*
  * An implementation of Tree to test my framework
  */
 public class ConcreteTreeNode implements Tree {
-	private ConcreteTreeNode root;
+	public ConcreteTreeNode root;
 	private Object data;
 	private List<ConcreteTreeNode> children = new ArrayList<ConcreteTreeNode>();
 	private ConcreteTreeNode parent = null;
@@ -38,7 +37,7 @@ public class ConcreteTreeNode implements Tree {
 		this.parent = parent;
 	}
 	
-	public boolean hasParent() {	//TODO try and remove
+	public boolean hasParent() {
 		return !(this.parent == null);
 	}
 	
@@ -50,7 +49,7 @@ public class ConcreteTreeNode implements Tree {
 	@Override
 	public List<ConcreteTreeNode> getChildren(Object node) throws ObjectNotInTreeException {
 		if(!isInTree(node))
-			throw new ObjectNotInTreeException(node + " not found in tree");
+			throw new ObjectNotInTreeException("Node: " + node + " not found in tree");
 		return children;
 	}
 
@@ -63,19 +62,20 @@ public class ConcreteTreeNode implements Tree {
 
 	@Override
 	public boolean isInTree(Object node) {
-		if(node.equals(root))
-			return true;
-		
-		Sorter sorter = new SorterDescendantsDepthFirst();
-//		System.out.println(sorter.sort(root).contains(node));		
-		
-		
-		
-		
-		
-		return true;
+		return searchTree(node, root);
 	}
 
-	
+	private boolean searchTree(Object searchingForNode, ConcreteTreeNode root){
+	    if (root.equals(searchingForNode)) 
+	    	return true;
+	    
+	    boolean found = false;
+	    for (int i = 0; i < root.children.size(); i++) {
+	    	found = searchTree(searchingForNode, root.children.get(i));
+	    	if(found)
+	    		return true;
+	    }
+	    return found;
+	 }
 
 }

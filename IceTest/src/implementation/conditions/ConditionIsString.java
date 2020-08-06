@@ -1,6 +1,7 @@
-package implementation;
+package implementation.conditions;
 
 import framework.Condition;
+import implementation.ConcreteTreeNode;
 
 public class ConditionIsString implements Condition {
 

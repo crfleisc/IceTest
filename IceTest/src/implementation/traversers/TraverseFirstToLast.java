@@ -1,4 +1,4 @@
-package implementation;
+package implementation.traversers;
 
 import framework.Sorter;
 import framework.Traverser;

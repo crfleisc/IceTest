@@ -1,9 +1,4 @@
 package assignmentTest;
-/*
- * isInTree only seems to make sense if the Tree has a reference to 
- * the root. I could find the root in that method, but then the node
- * in question would always be in that tree
- */
 
 import java.util.ArrayList;
 
@@ -12,16 +7,18 @@ import framework.Condition;
 import framework.Sorter;
 import framework.Traverser;
 import framework.TreeWorker;
-import implementation.ActionBuildCollection;
-import implementation.ActionBuildString;
 import implementation.ConcreteTreeNode;
-import implementation.ConditionIsInteger;
-import implementation.ConditionIsString;
-import implementation.SorterAncestors;
-import implementation.SorterDescendantsDepthFirst;
-import implementation.TraverseFirstToLast;
+import implementation.actions.ActionBuildCollection;
+import implementation.actions.ActionBuildString;
+import implementation.conditions.ConditionIsAncestor;
+import implementation.conditions.ConditionIsInteger;
+import implementation.conditions.ConditionIsString;
+import implementation.sorters.SorterAncestors;
+import implementation.sorters.SorterDescendantsDepthFirst;
+import implementation.traversers.TraverseFirstToLast;
 
-/*
+/*	Even = String 	
+ *  Odd = Integer
  * 					   0 			<- root
  * 				1	   2	   3
  * 			   4 5	   7	   
@@ -32,18 +29,43 @@ import implementation.TraverseFirstToLast;
 public class MainTest {
 
 	public static void main(String[] args) {
-		int start = 0;
+		int start = 4;	// Choose 1-10 to test different startNodes
 		ConcreteTreeNode startNode = createTestData(start);
+		
+		System.out.println("Assignment Tests with startNode: " + startNode);
+		testCollectionStringDescendant(startNode); // Assignment B
+		testPrintAllAncestors(startNode);		   // Assignment C
+		
+		System.out.println("\nOther Tests with startNode: " + startNode);
 		
 		testPrintStringDescendant(startNode);
 		testPrintIntegerDescendant(startNode);
-		testCollectionStringDescendant(startNode); // Assignment B
 		testCollectionIntegerDescendant(startNode);
 		
 		testPrintStringAncestor(startNode);
 		testPrintIntegerAncestor(startNode);
 		testCollectionStringAncestor(startNode);
 		testCollectionIntegerAncestor(startNode);
+	}
+
+	private static void testCollectionStringDescendant(ConcreteTreeNode startNode) {
+		Action action = new ActionBuildCollection();
+		Condition condition = new ConditionIsString();
+		Sorter sorter = new SorterDescendantsDepthFirst();
+		Traverser traverser = new TraverseFirstToLast(sorter, startNode);
+		
+		TreeWorker worker = new TreeWorker(action, condition, traverser); 
+		System.out.println("testCollectionStringDescendant " + worker.doWork());
+	}
+	
+	private static void testPrintAllAncestors(ConcreteTreeNode startNode) {
+		Action action = new ActionBuildString();
+		Condition condition = new ConditionIsAncestor();
+		Sorter sorter = new SorterAncestors();
+		Traverser traverser = new TraverseFirstToLast(sorter, startNode);
+		
+		TreeWorker worker = new TreeWorker(action, condition, traverser); 
+		System.out.println("testPrintAllAncestors " + worker.doWork());
 	}
 
 	private static void testCollectionIntegerAncestor(ConcreteTreeNode startNode) {
@@ -96,16 +118,6 @@ public class MainTest {
 		System.out.println("testCollectionIntegerDescendant " + worker.doWork());
 	}
 
-	private static void testCollectionStringDescendant(ConcreteTreeNode startNode) {
-		Action action = new ActionBuildCollection();
-		Condition condition = new ConditionIsString();
-		Sorter sorter = new SorterDescendantsDepthFirst();
-		Traverser traverser = new TraverseFirstToLast(sorter, startNode);
-		
-		TreeWorker worker = new TreeWorker(action, condition, traverser); 
-		System.out.println("testCollectionStringDescendant " + worker.doWork());
-	}
-
 	private static void testPrintIntegerDescendant(ConcreteTreeNode startNode) {
 		Action action = new ActionBuildString();
 		Condition condition = new ConditionIsInteger();
@@ -135,6 +147,8 @@ public class MainTest {
 			else
 				test.add(new ConcreteTreeNode(Integer.valueOf(i), test.get(0)));
 		}
+		
+		test.get(0).root = test.get(0);
 		
 		test.get(0).addChild(test.get(1));
 		test.get(0).addChild(test.get(2));

@@ -1,8 +1,9 @@
-package implementation;
+package implementation.actions;
 
 import java.util.ArrayList;
 
 import framework.Action;
+import implementation.ConcreteTreeNode;
 
 public class ActionBuildCollection implements Action {
 
